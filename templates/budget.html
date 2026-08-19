@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}
+Budget | Expense Tracker
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Budget | Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+
+            <div>
+
+                <h1>Monthly Budget</h1>
+
+                <p>
+                    Set and track your monthly spending limit.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Budget Layout -->
+        <div class="budget-container">
+
+
+            <!-- Current Budget -->
+            <div class="budget-card">
+
+                <h2>
+                    {{ month_name }} {{ current_year }}
+                </h2>
+
+                <p class="budget-label">
+                    Monthly Budget
+                </p>
+
+                <p class="budget-amount">
+                    ₹{{ "%.2f"|format(monthly_budget) }}
+                </p>
+
+
+                <!-- Spent -->
+                <div class="budget-stat">
+
+                    <span>
+                        Spent
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(monthly_expenses) }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Remaining -->
+                <div class="budget-stat">
+
+                    <span>
+                        Remaining
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(budget_remaining) }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Progress Bar -->
+<div class="budget-progress">
+
+    <progress
+        class="budget-progress-bar"
+        value="{{ display_percentage }}"
+        max="100">
+    </progress>
+
+</div>
+
+                </div>
+
+
+                <!-- Percentage -->
+                <p class="budget-percentage">
+
+                    {{ "%.1f"|format(budget_percentage) }}%
+                    of budget used
+
+                </p>
+
+            </div>
+
+
+            <!-- Set Budget Form -->
+            <div class="budget-form-card">
+
+                <h2>
+                    Set Monthly Budget
+                </h2>
+
+                <p>
+                    Choose how much you want to spend this month.
+                </p>
+
+
+                <form method="POST" action="/budget">
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            Budget Amount (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="Example: 20000"
+                            min="1"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn"
+                    >
+                        Save Budget
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
+
+{% endblock %}

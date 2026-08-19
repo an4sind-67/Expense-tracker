@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}
+Income | Expense Tracker
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Income | Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<main class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Income</h1>
+
+            <p>
+                Manage all your income in one place.
+            </p>
+
+        </div>
+
+        <a href="/add-income" class="btn">
+            + Add Income
+        </a>
+
+    </div>
+
+
+    <div class="expenses-card">
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Income</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% if incomes %}
+
+                        {% for income in incomes %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ income.title }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="category-badge">
+                                        {{ income.source }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {{ income.date }}
+                                </td>
+
+                                <td>
+                                    <strong class="income-text">
+                                        + ₹{{ "%.2f"|format(income.amount) }}
+                                    </strong>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="4"
+                                class="empty-state"
+                            >
+                                No income recorded yet.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>
+
+{% endblock %}

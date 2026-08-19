@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Expense Tracker
+{% endblock %}
+
+
+{% block content %}
+
+<main class="container">
+
+    <!-- =====================================================
+         DASHBOARD HEADER
+         ===================================================== -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h1>Dashboard</h1>
+
+            <p>
+                Welcome back, {{ current_user.username }}!
+                Here's your financial overview.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('add_expense') }}"
+            class="btn">
+
+            + Add Expense
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+         ===================================================== -->
+
+    <div class="summary-cards">
+
+
+        <!-- Balance -->
+
+        <div class="summary-card">
+
+            <h3>
+                Total Balance
+            </h3>
+
+            <div
+                class="summary-value
+                {% if balance >= 0 %}
+                    positive
+                {% else %}
+                    negative
+                {% endif %}">
+
+                ₹{{ "%.2f"|format(balance) }}
+
+            </div>
+
+            <p>
+                Available balance
+            </p>
+
+        </div>
+
+
+        <!-- Income -->
+
+        <div class="summary-card">
+
+            <h3>
+                Total Income
+            </h3>
+
+            <div class="summary-value positive">
+
+                ₹{{ "%.2f"|format(total_income) }}
+
+            </div>
+
+            <p>
+                All recorded income
+            </p>
+
+        </div>
+
+
+        <!-- Expenses -->
+
+        <div class="summary-card">
+
+            <h3>
+                Total Expenses
+            </h3>
+
+            <div class="summary-value negative">
+
+                ₹{{ "%.2f"|format(total_expenses) }}
+
+            </div>
+
+            <p>
+                All recorded expenses
+            </p>
+
+        </div>
+
+
+        <!-- Budget -->
+
+        <div class="summary-card">
+
+            <h3>
+                Monthly Budget
+            </h3>
+
+            <div class="summary-value">
+
+                ₹{{ "%.2f"|format(monthly_budget) }}
+
+            </div>
+
+            <p>
+
+                {% if monthly_budget > 0 %}
+
+                    ₹{{ "%.2f"|format(budget_remaining) }}
+                    remaining
+
+                {% else %}
+
+                    No budget set
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DASHBOARD GRID
+         ===================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- =================================================
+             CHART SECTION
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <h2>
+                    Spending Overview
+                </h2>
+
+
+                <select id="spendingPeriod">
+
+                    <option value="this-month">
+                        This Month
+                    </option>
+
+                    <option value="last-month">
+                        Last Month
+                    </option>
+
+                    <option value="last-3-months">
+                        Last 3 Months
+                    </option>
+
+                    <option value="this-year">
+                        This Year
+                    </option>
+
+                    <option value="all-time">
+                        All Time
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Category Chart -->
+
+            <div class="chart-container">
+
+                <canvas
+                    id="expenseChart"
+                    data-labels='{{ category_labels | tojson }}'
+                    data-values='{{ category_values | tojson }}'>
+                </canvas>
+
+            </div>
+
+
+            <!-- Monthly Spending Chart -->
+
+            <div class="chart-container monthly-chart">
+
+                <canvas
+                    id="monthlyExpenseChart"
+                    data-labels='{{ monthly_labels | tojson }}'
+                    data-values='{{ monthly_values | tojson }}'>
+                </canvas>
+
+            </div>
+
+
+            <!-- Income vs Expenses -->
+
+            <div class="chart-container comparison-chart">
+
+                <canvas
+                    id="incomeExpenseChart"
+                    data-income="{{ total_income }}"
+                    data-expenses="{{ total_expenses }}">
+                </canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECENT TRANSACTIONS
+             ================================================= -->
+
+        <section class="dashboard-section transactions-section">
+
+            <div class="section-header">
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+                <a href="{{ url_for('expenses') }}">
+                    View Expenses
+                </a>
+
+            </div>
+
+
+            <div class="transactions-list">
+
+
+                {% if transactions %}
+
+
+                    {% for transaction in transactions %}
+
+                    <div class="transaction-item">
+
+
+                        <div class="transaction-info">
+
+                            <h3>
+                                {{ transaction.title }}
+                            </h3>
+
+                            <p>
+
+                                {{ transaction.category }}
+
+                                ·
+
+                                {{ transaction.date.strftime("%Y-%m-%d") }}
+
+                            </p>
+
+                        </div>
+
+
+                        {% if transaction.type == "income" %}
+
+                            <div class="transaction-amount income">
+
+                                + ₹{{ "%.2f"|format(transaction.amount) }}
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="transaction-amount expense">
+
+                                - ₹{{ "%.2f"|format(transaction.amount) }}
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <div class="empty-state">
+
+                        <p>
+                            No transactions yet.
+                        </p>
+
+                        <a
+                            href="{{ url_for('add_expense') }}"
+                            class="btn">
+
+                            Add Your First Expense
+
+                        </a>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         BUDGET SUMMARY
+         ===================================================== -->
+
+    <section class="budget-summary dashboard-section">
+
+        <div class="section-header">
+
+            <h2>
+                Monthly Budget
+            </h2>
+
+            <a href="{{ url_for('budget') }}">
+                Manage Budget
+            </a>
+
+        </div>
+
+
+        {% if monthly_budget > 0 %}
+
+
+            <div class="budget-info">
+
+                <div>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(monthly_expenses) }}
+                    </strong>
+
+                    <span>
+                        spent
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(budget_remaining) }}
+                    </strong>
+
+                    <span>
+                        remaining
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="budget-progress">
+
+                <div
+                    class="budget-progress-bar"
+                    style="width: {{ display_percentage }}%;">
+
+                </div>
+
+            </div>
+
+
+            <p class="budget-percentage">
+
+                {{ "%.1f"|format(budget_percentage) }}%
+                of budget used
+
+            </p>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <p>
+                    You haven't set a monthly budget yet.
+                </p>
+
+                <a
+                    href="{{ url_for('budget') }}"
+                    class="btn">
+
+                    Set Monthly Budget
+
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% endblock %}
