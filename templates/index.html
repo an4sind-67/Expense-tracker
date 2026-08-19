@@ -4,14 +4,9 @@
 Dashboard | Expense Tracker
 {% endblock %}
 
-
 {% block content %}
 
 <main class="container">
-
-    <!-- =====================================================
-         DASHBOARD HEADER
-         ===================================================== -->
 
     <div class="dashboard-header">
 
@@ -26,7 +21,6 @@ Dashboard | Expense Tracker
 
         </div>
 
-
         <a
             href="{{ url_for('add_expense') }}"
             class="btn">
@@ -37,15 +31,7 @@ Dashboard | Expense Tracker
 
     </div>
 
-
-    <!-- =====================================================
-         SUMMARY CARDS
-         ===================================================== -->
-
     <div class="summary-cards">
-
-
-        <!-- Balance -->
 
         <div class="summary-card">
 
@@ -71,9 +57,6 @@ Dashboard | Expense Tracker
 
         </div>
 
-
-        <!-- Income -->
-
         <div class="summary-card">
 
             <h3>
@@ -92,9 +75,6 @@ Dashboard | Expense Tracker
 
         </div>
 
-
-        <!-- Expenses -->
-
         <div class="summary-card">
 
             <h3>
@@ -112,9 +92,6 @@ Dashboard | Expense Tracker
             </p>
 
         </div>
-
-
-        <!-- Budget -->
 
         <div class="summary-card">
 
@@ -147,17 +124,7 @@ Dashboard | Expense Tracker
 
     </div>
 
-
-    <!-- =====================================================
-         DASHBOARD GRID
-         ===================================================== -->
-
     <div class="dashboard-grid">
-
-
-        <!-- =================================================
-             CHART SECTION
-             ================================================= -->
 
         <section class="dashboard-section">
 
@@ -166,7 +133,6 @@ Dashboard | Expense Tracker
                 <h2>
                     Spending Overview
                 </h2>
-
 
                 <select id="spendingPeriod">
 
@@ -194,9 +160,6 @@ Dashboard | Expense Tracker
 
             </div>
 
-
-            <!-- Category Chart -->
-
             <div class="chart-container">
 
                 <canvas
@@ -207,9 +170,6 @@ Dashboard | Expense Tracker
 
             </div>
 
-
-            <!-- Monthly Spending Chart -->
-
             <div class="chart-container monthly-chart">
 
                 <canvas
@@ -219,9 +179,6 @@ Dashboard | Expense Tracker
                 </canvas>
 
             </div>
-
-
-            <!-- Income vs Expenses -->
 
             <div class="chart-container comparison-chart">
 
@@ -234,11 +191,6 @@ Dashboard | Expense Tracker
             </div>
 
         </section>
-
-
-        <!-- =================================================
-             RECENT TRANSACTIONS
-             ================================================= -->
 
         <section class="dashboard-section transactions-section">
 
@@ -254,17 +206,13 @@ Dashboard | Expense Tracker
 
             </div>
 
-
             <div class="transactions-list">
 
-
                 {% if transactions %}
-
 
                     {% for transaction in transactions %}
 
                     <div class="transaction-item">
-
 
                         <div class="transaction-info">
 
@@ -284,7 +232,6 @@ Dashboard | Expense Tracker
 
                         </div>
 
-
                         {% if transaction.type == "income" %}
 
                             <div class="transaction-amount income">
@@ -303,14 +250,11 @@ Dashboard | Expense Tracker
 
                         {% endif %}
 
-
                     </div>
 
                     {% endfor %}
 
-
                 {% else %}
-
 
                     <div class="empty-state">
 
@@ -328,20 +272,13 @@ Dashboard | Expense Tracker
 
                     </div>
 
-
                 {% endif %}
-
 
             </div>
 
         </section>
 
     </div>
-
-
-    <!-- =====================================================
-         BUDGET SUMMARY
-         ===================================================== -->
 
     <section class="budget-summary dashboard-section">
 
@@ -357,9 +294,7 @@ Dashboard | Expense Tracker
 
         </div>
 
-
         {% if monthly_budget > 0 %}
-
 
             <div class="budget-info">
 
@@ -375,7 +310,6 @@ Dashboard | Expense Tracker
 
                 </div>
 
-
                 <div>
 
                     <strong>
@@ -390,17 +324,15 @@ Dashboard | Expense Tracker
 
             </div>
 
-
             <div class="budget-progress">
 
                 <div
                     class="budget-progress-bar"
-                    style="width: {{ display_percentage }}%;">
+                    data-progress="{{ display_percentage }}">
 
                 </div>
 
             </div>
-
 
             <p class="budget-percentage">
 
@@ -409,9 +341,7 @@ Dashboard | Expense Tracker
 
             </p>
 
-
         {% else %}
-
 
             <div class="empty-state">
 
@@ -429,7 +359,6 @@ Dashboard | Expense Tracker
 
             </div>
 
-
         {% endif %}
 
     </section>
@@ -437,7 +366,6 @@ Dashboard | Expense Tracker
 </main>
 
 {% endblock %}
-
 
 {% block scripts %}
 

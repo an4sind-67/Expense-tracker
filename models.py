@@ -2,13 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 db = SQLAlchemy()
-
-
-# ============================================================
-# USER MODEL
-# ============================================================
 
 class User(db.Model, UserMixin):
 
@@ -34,21 +28,11 @@ class User(db.Model, UserMixin):
         nullable=False
     )
 
-
-    # --------------------------------------------------------
-    # Set Password
-    # --------------------------------------------------------
-
     def set_password(self, password):
 
         self.password_hash = generate_password_hash(
             password
         )
-
-
-    # --------------------------------------------------------
-    # Check Password
-    # --------------------------------------------------------
 
     def check_password(self, password):
 
@@ -57,15 +41,10 @@ class User(db.Model, UserMixin):
             password
         )
 
-
     def __repr__(self):
 
         return f"<User {self.username}>"
 
-
-# ============================================================
-# EXPENSE MODEL
-# ============================================================
 
 class Expense(db.Model):
 
@@ -100,15 +79,10 @@ class Expense(db.Model):
         nullable=True
     )
 
-
     def __repr__(self):
 
         return f"<Expense {self.title}>"
 
-
-# ============================================================
-# INCOME MODEL
-# ============================================================
 
 class Income(db.Model):
 
@@ -143,15 +117,10 @@ class Income(db.Model):
         nullable=True
     )
 
-
     def __repr__(self):
 
         return f"<Income {self.title}>"
 
-
-# ============================================================
-# BUDGET MODEL
-# ============================================================
 
 class Budget(db.Model):
 
@@ -180,7 +149,6 @@ class Budget(db.Model):
         db.ForeignKey("user.id"),
         nullable=True
     )
-
 
     def __repr__(self):
 

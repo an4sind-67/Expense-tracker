@@ -1,7 +1,3 @@
-// ============================================================
-// EXPENSE CATEGORY CHART
-// ============================================================
-
 const expenseCanvas = document.getElementById("expenseChart");
 
 let categoryChart = null;
@@ -61,10 +57,6 @@ if (expenseCanvas) {
 }
 
 
-// ============================================================
-// MONTHLY EXPENSE TREND
-// ============================================================
-
 const monthlyCanvas = document.getElementById(
     "monthlyExpenseChart"
 );
@@ -73,7 +65,6 @@ let monthlyChart = null;
 
 let originalMonthlyLabels = [];
 let originalMonthlyValues = [];
-
 
 if (monthlyCanvas) {
 
@@ -84,7 +75,6 @@ if (monthlyCanvas) {
     originalMonthlyValues = JSON.parse(
         monthlyCanvas.dataset.values
     );
-
 
     monthlyChart = new Chart(monthlyCanvas, {
 
@@ -167,21 +157,15 @@ if (monthlyCanvas) {
 }
 
 
-// ============================================================
-// SPENDING PERIOD FILTER
-// ============================================================
-
 const spendingPeriod = document.getElementById(
     "spendingPeriod"
 );
-
 
 function getCurrentDate() {
 
     return new Date();
 
 }
-
 
 function getMonthKey(year, month) {
 
@@ -192,7 +176,6 @@ function getMonthKey(year, month) {
     return `${year}-${monthNumber}`;
 
 }
-
 
 function filterMonthlyData(period) {
 
@@ -205,17 +188,11 @@ function filterMonthlyData(period) {
 
     }
 
-
     const today = getCurrentDate();
 
     const currentYear = today.getFullYear();
 
     const currentMonth = today.getMonth();
-
-
-    // --------------------------------------------------------
-    // THIS MONTH
-    // --------------------------------------------------------
 
     if (period === "this-month") {
 
@@ -228,7 +205,6 @@ function filterMonthlyData(period) {
             currentKey
         );
 
-
         if (index === -1) {
 
             return {
@@ -237,7 +213,6 @@ function filterMonthlyData(period) {
             };
 
         }
-
 
         return {
 
@@ -253,17 +228,11 @@ function filterMonthlyData(period) {
 
     }
 
-
-    // --------------------------------------------------------
-    // LAST MONTH
-    // --------------------------------------------------------
-
     if (period === "last-month") {
 
         let year = currentYear;
 
         let month = currentMonth - 1;
-
 
         if (month < 0) {
 
@@ -273,7 +242,6 @@ function filterMonthlyData(period) {
 
         }
 
-
         const lastMonthKey = getMonthKey(
             year,
             month
@@ -282,7 +250,6 @@ function filterMonthlyData(period) {
         const index = originalMonthlyLabels.indexOf(
             lastMonthKey
         );
-
 
         if (index === -1) {
 
@@ -296,7 +263,6 @@ function filterMonthlyData(period) {
 
         }
 
-
         return {
 
             labels: [
@@ -311,23 +277,16 @@ function filterMonthlyData(period) {
 
     }
 
-
-    // --------------------------------------------------------
-    // LAST 3 MONTHS
-    // --------------------------------------------------------
-
     if (period === "last-3-months") {
 
         const labels = [];
         const values = [];
-
 
         for (let i = 2; i >= 0; i--) {
 
             let year = currentYear;
 
             let month = currentMonth - i;
-
 
             while (month < 0) {
 
@@ -337,20 +296,16 @@ function filterMonthlyData(period) {
 
             }
 
-
             const key = getMonthKey(
                 year,
                 month
             );
 
-
             const index = originalMonthlyLabels.indexOf(
                 key
             );
 
-
             labels.push(key);
-
 
             if (index === -1) {
 
@@ -366,7 +321,6 @@ function filterMonthlyData(period) {
 
         }
 
-
         return {
             labels: labels,
             values: values
@@ -374,16 +328,10 @@ function filterMonthlyData(period) {
 
     }
 
-
-    // --------------------------------------------------------
-    // THIS YEAR
-    // --------------------------------------------------------
-
     if (period === "this-year") {
 
         const labels = [];
         const values = [];
-
 
         for (let month = 0; month < 12; month++) {
 
@@ -392,14 +340,11 @@ function filterMonthlyData(period) {
                 month
             );
 
-
             const index = originalMonthlyLabels.indexOf(
                 key
             );
 
-
             labels.push(key);
-
 
             if (index === -1) {
 
@@ -415,18 +360,12 @@ function filterMonthlyData(period) {
 
         }
 
-
         return {
             labels: labels,
             values: values
         };
 
     }
-
-
-    // --------------------------------------------------------
-    // ALL TIME
-    // --------------------------------------------------------
 
     return {
 
@@ -438,11 +377,6 @@ function filterMonthlyData(period) {
 
 }
 
-
-// ============================================================
-// UPDATE CHART
-// ============================================================
-
 function updateMonthlyChart(period) {
 
     if (!monthlyChart) {
@@ -451,28 +385,19 @@ function updateMonthlyChart(period) {
 
     }
 
-
     const filteredData = filterMonthlyData(
         period
     );
 
-
     monthlyChart.data.labels =
         filteredData.labels;
-
 
     monthlyChart.data.datasets[0].data =
         filteredData.values;
 
-
     monthlyChart.update();
 
 }
-
-
-// ============================================================
-// DROPDOWN EVENT
-// ============================================================
 
 if (spendingPeriod) {
 
@@ -487,18 +412,12 @@ if (spendingPeriod) {
         }
     );
 
-
-    // Load "This Month" initially
-
     updateMonthlyChart(
         "this-month"
     );
 
 }
 
-// ============================================================
-// INCOME VS EXPENSES CHART
-// ============================================================
 
 const incomeExpenseCanvas = document.getElementById(
     "incomeExpenseChart"
@@ -514,7 +433,6 @@ if (incomeExpenseCanvas) {
         incomeExpenseCanvas.dataset.expenses
     );
 
-
     new Chart(incomeExpenseCanvas, {
 
         type: "bar",
@@ -529,6 +447,7 @@ if (incomeExpenseCanvas) {
             datasets: [
 
                 {
+
                     label: "Amount",
 
                     data: [
@@ -537,6 +456,7 @@ if (incomeExpenseCanvas) {
                     ],
 
                     borderWidth: 1
+
                 }
 
             ]
@@ -590,5 +510,21 @@ if (incomeExpenseCanvas) {
         }
 
     });
+
+}
+
+
+const progressBar = document.querySelector(
+    ".budget-progress-bar"
+);
+
+if (progressBar) {
+
+    const progress = parseFloat(
+        progressBar.dataset.progress
+    );
+
+    progressBar.style.width =
+        Math.min(Math.max(progress, 0), 100) + "%";
 
 }

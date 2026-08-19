@@ -5,22 +5,6 @@ Income | Expense Tracker
 {% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Income | Expense Tracker</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
-
-</head>
-
-<body>
 
 <main class="container">
 
@@ -36,12 +20,15 @@ Income | Expense Tracker
 
         </div>
 
-        <a href="/add-income" class="btn">
+        <a
+            href="{{ url_for('add_income') }}"
+            class="btn">
+
             + Add Income
+
         </a>
 
     </div>
-
 
     <div class="expenses-card">
 
@@ -53,15 +40,25 @@ Income | Expense Tracker
 
                     <tr>
 
-                        <th>Income</th>
-                        <th>Source</th>
-                        <th>Date</th>
-                        <th>Amount</th>
+                        <th>
+                            Income
+                        </th>
+
+                        <th>
+                            Source
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
 
                     </tr>
 
                 </thead>
-
 
                 <tbody>
 
@@ -72,15 +69,19 @@ Income | Expense Tracker
                             <tr>
 
                                 <td>
+
                                     <strong>
                                         {{ income.title }}
                                     </strong>
+
                                 </td>
 
                                 <td>
+
                                     <span class="category-badge">
                                         {{ income.source }}
                                     </span>
+
                                 </td>
 
                                 <td>
@@ -88,9 +89,13 @@ Income | Expense Tracker
                                 </td>
 
                                 <td>
+
                                     <strong class="income-text">
+
                                         + ₹{{ "%.2f"|format(income.amount) }}
+
                                     </strong>
+
                                 </td>
 
                             </tr>
@@ -103,9 +108,10 @@ Income | Expense Tracker
 
                             <td
                                 colspan="4"
-                                class="empty-state"
-                            >
+                                class="empty-state">
+
                                 No income recorded yet.
+
                             </td>
 
                         </tr>
@@ -121,9 +127,5 @@ Income | Expense Tracker
     </div>
 
 </main>
-
-</body>
-
-</html>
 
 {% endblock %}

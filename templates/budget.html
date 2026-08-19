@@ -5,164 +5,128 @@ Budget | Expense Tracker
 {% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+<main class="container">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="page-header">
 
-    <title>Budget | Expense Tracker</title>
+        <div>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+            <h1>Monthly Budget</h1>
 
-</head>
-
-<body>
-    <!-- Main Content -->
-    <main class="container">
-
-        <!-- Page Header -->
-        <div class="page-header">
-
-            <div>
-
-                <h1>Monthly Budget</h1>
-
-                <p>
-                    Set and track your monthly spending limit.
-                </p>
-
-            </div>
+            <p>
+                Set and track your monthly spending limit.
+            </p>
 
         </div>
 
+    </div>
 
-        <!-- Budget Layout -->
-        <div class="budget-container">
+    <div class="budget-container">
 
+        <div class="budget-card">
 
-            <!-- Current Budget -->
-            <div class="budget-card">
+            <h2>
+                {{ month_name }} {{ current_year }}
+            </h2>
 
-                <h2>
-                    {{ month_name }} {{ current_year }}
-                </h2>
+            <p class="budget-label">
+                Monthly Budget
+            </p>
 
-                <p class="budget-label">
-                    Monthly Budget
-                </p>
+            <p class="budget-amount">
+                ₹{{ "%.2f"|format(monthly_budget) }}
+            </p>
 
-                <p class="budget-amount">
-                    ₹{{ "%.2f"|format(monthly_budget) }}
-                </p>
+            <div class="budget-stat">
 
+                <span>
+                    Spent
+                </span>
 
-                <!-- Spent -->
-                <div class="budget-stat">
-
-                    <span>
-                        Spent
-                    </span>
-
-                    <strong>
-                        ₹{{ "%.2f"|format(monthly_expenses) }}
-                    </strong>
-
-                </div>
-
-
-                <!-- Remaining -->
-                <div class="budget-stat">
-
-                    <span>
-                        Remaining
-                    </span>
-
-                    <strong>
-                        ₹{{ "%.2f"|format(budget_remaining) }}
-                    </strong>
-
-                </div>
-
-
-                <!-- Progress Bar -->
-<div class="budget-progress">
-
-    <progress
-        class="budget-progress-bar"
-        value="{{ display_percentage }}"
-        max="100">
-    </progress>
-
-</div>
-
-                </div>
-
-
-                <!-- Percentage -->
-                <p class="budget-percentage">
-
-                    {{ "%.1f"|format(budget_percentage) }}%
-                    of budget used
-
-                </p>
+                <strong>
+                    ₹{{ "%.2f"|format(monthly_expenses) }}
+                </strong>
 
             </div>
 
+            <div class="budget-stat">
 
-            <!-- Set Budget Form -->
-            <div class="budget-form-card">
+                <span>
+                    Remaining
+                </span>
 
-                <h2>
-                    Set Monthly Budget
-                </h2>
+                <strong>
+                    ₹{{ "%.2f"|format(budget_remaining) }}
+                </strong>
 
-                <p>
-                    Choose how much you want to spend this month.
-                </p>
+            </div>
 
+            <div class="budget-progress">
 
-                <form method="POST" action="/budget">
+                <progress
+                    class="budget-progress-bar"
+                    value="{{ display_percentage }}"
+                    max="100">
+                </progress>
 
-                    <div class="form-group">
+            </div>
 
-                        <label for="amount">
-                            Budget Amount (₹)
-                        </label>
+            <p class="budget-percentage">
 
-                        <input
-                            type="number"
-                            id="amount"
-                            name="amount"
-                            placeholder="Example: 20000"
-                            min="1"
-                            step="0.01"
-                            required
-                        >
+                {{ "%.1f"|format(budget_percentage) }}%
+                of budget used
 
-                    </div>
+            </p>
 
+        </div>
 
-                    <button
-                        type="submit"
-                        class="btn"
+        <div class="budget-form-card">
+
+            <h2>
+                Set Monthly Budget
+            </h2>
+
+            <p>
+                Choose how much you want to spend this month.
+            </p>
+
+            <form
+                method="POST"
+                action="{{ url_for('budget') }}">
+
+                <div class="form-group">
+
+                    <label for="amount">
+                        Budget Amount (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="Example: 20000"
+                        min="1"
+                        step="0.01"
+                        required
                     >
-                        Save Budget
-                    </button>
 
-                </form>
+                </div>
 
-            </div>
+                <button
+                    type="submit"
+                    class="btn">
+
+                    Save Budget
+
+                </button>
+
+            </form>
 
         </div>
 
-    </main>
+    </div>
 
-</body>
-
-</html>
+</main>
 
 {% endblock %}

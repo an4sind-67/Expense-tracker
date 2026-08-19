@@ -16,25 +16,14 @@ import io
 app = Flask(__name__)
 
 
-# ============================================================
-# APPLICATION CONFIGURATION
-# ============================================================
-
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///expenses.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Used by Flask-Login to securely manage sessions.
-# For a real production deployment, use a strong secret
-# stored in an environment variable.
 app.config["SECRET_KEY"] = "expense-tracker-development-secret"
 
 
 db.init_app(app)
 
-
-# ============================================================
-# FLASK-LOGIN CONFIGURATION
-# ============================================================
 
 login_manager = LoginManager()
 
@@ -51,21 +40,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# ============================================================
-# DATABASE MIGRATION FOR EXISTING DATABASE
-# ============================================================
-
 def update_existing_database():
 
     inspector = inspect(db.engine)
 
-    # Make sure all normal tables exist first.
     db.create_all()
 
-
-    # --------------------------------------------------------
-    # Add user_id to Expense table if it doesn't exist
-    # --------------------------------------------------------
 
     expense_columns = [
         column["name"]
@@ -85,10 +65,6 @@ def update_existing_database():
 
             connection.commit()
 
-
-    # --------------------------------------------------------
-    # Add user_id to Income table if it doesn't exist
-    # --------------------------------------------------------
 
     inspector = inspect(db.engine)
 
@@ -111,10 +87,6 @@ def update_existing_database():
             connection.commit()
 
 
-    # --------------------------------------------------------
-    # Add user_id to Budget table if it doesn't exist
-    # --------------------------------------------------------
-
     inspector = inspect(db.engine)
 
     budget_columns = [
@@ -135,10 +107,6 @@ def update_existing_database():
 
             connection.commit()
 
-
-# ============================================================
-# REGISTER
-# ============================================================
 
 @app.route(
     "/register",
@@ -171,10 +139,6 @@ def register():
         )
 
 
-        # ----------------------------------------------------
-        # Basic validation
-        # ----------------------------------------------------
-
         if not username or not email or not password:
 
             return render_template(
@@ -191,10 +155,6 @@ def register():
             )
 
 
-        # ----------------------------------------------------
-        # Check existing username
-        # ----------------------------------------------------
-
         existing_username = User.query.filter_by(
             username=username
         ).first()
@@ -208,10 +168,6 @@ def register():
             )
 
 
-        # ----------------------------------------------------
-        # Check existing email
-        # ----------------------------------------------------
-
         existing_email = User.query.filter_by(
             email=email
         ).first()
@@ -224,10 +180,6 @@ def register():
                 error="Email already registered."
             )
 
-
-        # ----------------------------------------------------
-        # Create user
-        # ----------------------------------------------------
 
         user = User(
 
@@ -244,17 +196,6 @@ def register():
 
         db.session.commit()
 
-
-        # ----------------------------------------------------
-        # Assign old records to first registered user
-        # ----------------------------------------------------
-        #
-        # Your project already contains expenses, income and
-        # budget records created before authentication existed.
-        #
-        # We assign those old records to the first user so
-        # your existing data is not lost.
-        # ----------------------------------------------------
 
         if User.query.count() == 1:
 
@@ -291,10 +232,6 @@ def register():
             db.session.commit()
 
 
-        # ----------------------------------------------------
-        # Login immediately after registration
-        # ----------------------------------------------------
-
         login_user(user)
 
 
@@ -307,10 +244,6 @@ def register():
         "register.html"
     )
 
-
-# ============================================================
-# LOGIN
-# ============================================================
 
 @app.route(
     "/login",
@@ -364,10 +297,6 @@ def login():
     )
 
 
-# ============================================================
-# LOGOUT
-# ============================================================
-
 @app.route("/logout")
 @login_required
 def logout():
@@ -380,17 +309,10 @@ def logout():
     )
 
 
-# ============================================================
-# DASHBOARD
-# ============================================================
-
 @app.route("/")
 @login_required
 def home():
 
-    # --------------------------------------------------------
-    # Get current user's expenses
-    # --------------------------------------------------------
 
     expenses = Expense.query.filter_by(
         user_id=current_user.id
@@ -399,10 +321,6 @@ def home():
     ).all()
 
 
-    # --------------------------------------------------------
-    # Get current user's income
-    # --------------------------------------------------------
-
     incomes = Income.query.filter_by(
         user_id=current_user.id
     ).order_by(
@@ -410,19 +328,11 @@ def home():
     ).all()
 
 
-    # ========================================================
-    # TOTAL INCOME
-    # ========================================================
-
     total_income = sum(
         income.amount
         for income in incomes
     )
 
-
-    # ========================================================
-    # TOTAL EXPENSES
-    # ========================================================
 
     total_expenses = sum(
         expense.amount
@@ -430,16 +340,8 @@ def home():
     )
 
 
-    # ========================================================
-    # BALANCE
-    # ========================================================
-
     balance = total_income - total_expenses
 
-
-    # ========================================================
-    # EXPENSES BY CATEGORY
-    # ========================================================
 
     category_totals = {}
 
@@ -467,10 +369,6 @@ def home():
         category_totals.values()
     )
 
-
-    # ========================================================
-    # MONTHLY EXPENSE TOTALS
-    # ========================================================
 
     monthly_totals = {}
 
@@ -511,18 +409,10 @@ def home():
     )
 
 
-    # ========================================================
-    # CURRENT MONTH
-    # ========================================================
-
     current_month = date.today().month
 
     current_year = date.today().year
 
-
-    # ========================================================
-    # CURRENT USER'S BUDGET
-    # ========================================================
 
     budget = Budget.query.filter_by(
 
@@ -544,10 +434,6 @@ def home():
         monthly_budget = 0
 
 
-    # ========================================================
-    # CURRENT MONTH EXPENSES
-    # ========================================================
-
     monthly_expenses = sum(
 
         expense.amount
@@ -561,10 +447,6 @@ def home():
     )
 
 
-    # ========================================================
-    # REMAINING BUDGET
-    # ========================================================
-
     budget_remaining = (
 
         monthly_budget
@@ -573,10 +455,6 @@ def home():
 
     )
 
-
-    # ========================================================
-    # BUDGET PERCENTAGE
-    # ========================================================
 
     if monthly_budget > 0:
 
@@ -602,14 +480,8 @@ def home():
     )
 
 
-    # ========================================================
-    # RECENT TRANSACTIONS
-    # ========================================================
-
     transactions = []
 
-
-    # Add expenses
 
     for expense in expenses:
 
@@ -627,8 +499,6 @@ def home():
 
         })
 
-
-    # Add income
 
     for income in incomes:
 
@@ -659,10 +529,6 @@ def home():
 
     transactions = transactions[:5]
 
-
-    # ========================================================
-    # DASHBOARD
-    # ========================================================
 
     return render_template(
 
@@ -700,10 +566,6 @@ def home():
 
     )
 
-
-# ============================================================
-# ADD EXPENSE
-# ============================================================
 
 @app.route(
     "/add-expense",
@@ -761,10 +623,6 @@ def add_expense():
         "add_expense.html"
     )
 
-
-# ============================================================
-# EXPENSES PAGE
-# ============================================================
 
 @app.route("/expenses")
 @login_required
@@ -916,10 +774,6 @@ def export_expenses():
     return response
 
 
-# ============================================================
-# EDIT EXPENSE
-# ============================================================
-
 @app.route(
     "/edit-expense/<int:id>",
     methods=["GET", "POST"]
@@ -977,10 +831,6 @@ def edit_expense(id):
     )
 
 
-# ============================================================
-# DELETE EXPENSE
-# ============================================================
-
 @app.route(
     "/delete-expense/<int:id>"
 )
@@ -1010,10 +860,6 @@ def delete_expense(id):
         url_for("expenses")
     )
 
-
-# ============================================================
-# ADD INCOME
-# ============================================================
 
 @app.route(
     "/add-income",
@@ -1075,10 +921,6 @@ def add_income():
     )
 
 
-# ============================================================
-# INCOME PAGE
-# ============================================================
-
 @app.route("/income")
 @login_required
 def income():
@@ -1103,10 +945,6 @@ def income():
     )
 
 
-# ============================================================
-# BUDGET
-# ============================================================
-
 @app.route(
     "/budget",
     methods=["GET", "POST"]
@@ -1115,8 +953,115 @@ def income():
 def budget():
 
     current_month = date.today().month
-
     current_year = date.today().year
+
+    budget_record = Budget.query.filter_by(
+        user_id=current_user.id,
+        month=current_month,
+        year=current_year
+    ).first()
+
+    if request.method == "POST":
+
+        amount_text = request.form.get(
+            "amount",
+            ""
+        ).strip()
+
+        if not amount_text:
+            return "Please enter a budget amount."
+
+        try:
+
+            amount = float(amount_text)
+
+            if amount <= 0:
+                return "Budget must be greater than 0."
+
+        except ValueError:
+
+            return "Please enter a valid number."
+
+        if budget_record:
+
+            budget_record.amount = amount
+
+        else:
+
+            budget_record = Budget(
+                amount=amount,
+                month=current_month,
+                year=current_year,
+                user_id=current_user.id
+            )
+
+            db.session.add(budget_record)
+
+        db.session.commit()
+
+        flash(
+            "Budget saved successfully.",
+            "success"
+        )
+
+        return redirect(
+            url_for("budget")
+        )
+
+    expenses = Expense.query.filter_by(
+        user_id=current_user.id
+    ).all()
+
+    monthly_expenses = sum(
+        expense.amount
+        for expense in expenses
+        if expense.date.month == current_month
+        and expense.date.year == current_year
+    )
+
+    if budget_record:
+
+        monthly_budget = budget_record.amount
+
+    else:
+
+        monthly_budget = 0
+
+    budget_remaining = (
+        monthly_budget
+        - monthly_expenses
+    )
+
+    if monthly_budget > 0:
+
+        budget_percentage = (
+            monthly_expenses
+            / monthly_budget
+        ) * 100
+
+    else:
+
+        budget_percentage = 0
+
+    display_percentage = min(
+        budget_percentage,
+        100
+    )
+
+    month_name = date.today().strftime(
+        "%B"
+    )
+
+    return render_template(
+        "budget.html",
+        monthly_budget=monthly_budget,
+        monthly_expenses=monthly_expenses,
+        budget_remaining=budget_remaining,
+        budget_percentage=budget_percentage,
+        display_percentage=display_percentage,
+        month_name=month_name,
+        current_year=current_year
+    )
 
 
 @app.route("/reports")
@@ -1153,11 +1098,15 @@ def reports():
 
         if expense.category in category_totals:
 
-            category_totals[expense.category] += expense.amount
+            category_totals[
+                expense.category
+            ] += expense.amount
 
         else:
 
-            category_totals[expense.category] = expense.amount
+            category_totals[
+                expense.category
+            ] = expense.amount
 
     category_labels = list(
         category_totals.keys()
@@ -1177,11 +1126,15 @@ def reports():
 
         if month_key in monthly_income:
 
-            monthly_income[month_key] += income.amount
+            monthly_income[
+                month_key
+            ] += income.amount
 
         else:
 
-            monthly_income[month_key] = income.amount
+            monthly_income[
+                month_key
+            ] = income.amount
 
     monthly_expenses = {}
 
@@ -1193,11 +1146,15 @@ def reports():
 
         if month_key in monthly_expenses:
 
-            monthly_expenses[month_key] += expense.amount
+            monthly_expenses[
+                month_key
+            ] += expense.amount
 
         else:
 
-            monthly_expenses[month_key] = expense.amount
+            monthly_expenses[
+                month_key
+            ] = expense.amount
 
     all_months = sorted(
         set(monthly_income.keys())
@@ -1228,216 +1185,12 @@ def reports():
         monthly_income_values=monthly_income_values,
         monthly_expense_values=monthly_expense_values
     )
-    # --------------------------------------------------------
-    # Current user's budget
-    # --------------------------------------------------------
 
-    budget_record = Budget.query.filter_by(
-
-        user_id=current_user.id,
-
-        month=current_month,
-
-        year=current_year
-
-    ).first()
-
-
-    # ========================================================
-    # SAVE BUDGET
-    # ========================================================
-
-    if request.method == "POST":
-
-        amount_text = request.form.get(
-
-            "amount",
-
-            ""
-
-        ).strip()
-
-
-        if not amount_text:
-
-            return "Please enter a budget amount."
-
-
-        try:
-
-            amount = float(
-                amount_text
-            )
-
-
-            if amount <= 0:
-
-                return (
-                    "Budget must be greater than 0."
-                )
-
-
-        except ValueError:
-
-            return (
-                "Please enter a valid number."
-            )
-
-
-        if budget_record:
-
-            budget_record.amount = amount
-
-
-        else:
-
-            budget_record = Budget(
-
-                amount=amount,
-
-                month=current_month,
-
-                year=current_year,
-
-                user_id=current_user.id
-
-            )
-
-
-            db.session.add(
-                budget_record
-            )
-
-
-        db.session.commit()
-
-        flash(
-            "Budget saved successfully.",
-            "success"
-        )
-
-
-        return redirect(
-            url_for("budget")
-        )
-
-
-    # ========================================================
-    # MONTHLY EXPENSES
-    # ========================================================
-
-    expenses = Expense.query.filter_by(
-
-        user_id=current_user.id
-
-    ).all()
-
-
-    monthly_expenses = sum(
-
-        expense.amount
-
-        for expense in expenses
-
-        if expense.date.month == current_month
-
-        and expense.date.year == current_year
-
-    )
-
-
-    # ========================================================
-    # MONTHLY BUDGET
-    # ========================================================
-
-    if budget_record:
-
-        monthly_budget = budget_record.amount
-
-    else:
-
-        monthly_budget = 0
-
-
-    # ========================================================
-    # REMAINING BUDGET
-    # ========================================================
-
-    budget_remaining = (
-
-        monthly_budget
-
-        - monthly_expenses
-
-    )
-
-
-    # ========================================================
-    # BUDGET PERCENTAGE
-    # ========================================================
-
-    if monthly_budget > 0:
-
-        budget_percentage = (
-
-            monthly_expenses
-
-            / monthly_budget
-
-        ) * 100
-
-    else:
-
-        budget_percentage = 0
-
-
-    display_percentage = min(
-
-        budget_percentage,
-
-        100
-
-    )
-
-
-    month_name = date.today().strftime(
-        "%B"
-    )
-
-
-    return render_template(
-
-        "budget.html",
-
-        monthly_budget=monthly_budget,
-
-        monthly_expenses=monthly_expenses,
-
-        budget_remaining=budget_remaining,
-
-        budget_percentage=budget_percentage,
-
-        display_percentage=display_percentage,
-
-        month_name=month_name,
-
-        current_year=current_year
-
-    )
-
-
-# ============================================================
-# DATABASE INITIALIZATION
-# ============================================================
 
 with app.app_context():
 
     update_existing_database()
 
-
-# ============================================================
-# RUN APPLICATION
-# ============================================================
 
 if __name__ == "__main__":
 
