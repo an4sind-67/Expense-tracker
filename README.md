@@ -1,14 +1,12 @@
-# 💰 Expense Tracker
+💰 Expense Tracker
 
 A full-stack personal finance management web application built with **Python, Flask, HTML, CSS, JavaScript, and SQLite**.
 
 Expense Tracker allows users to securely manage their income and expenses, set monthly budgets, and visualize their spending through interactive dashboards and charts.
 
----
+🚀 Features
 
-## 🚀 Features
-
-### 🔐 User Authentication
+🔐 User Authentication
 - User registration
 - Secure login/logout
 - Password hashing
@@ -16,7 +14,7 @@ Expense Tracker allows users to securely manage their income and expenses, set m
 - User-specific financial data
 - Multi-user data isolation
 
-### 💸 Expense Management
+💸 Expense Management
 - Add expenses
 - Edit expenses
 - Delete expenses
@@ -24,20 +22,20 @@ Expense Tracker allows users to securely manage their income and expenses, set m
 - Record transaction dates
 - View recent transactions
 
-### 💰 Income Management
+💰 Income Management
 - Add income
 - Categorize income
 - Track total income
 - View income transactions
 
-### 🎯 Budget Management
+Budget Management
 - Set monthly budget
 - Track monthly spending
 - Calculate remaining budget
 - Display budget usage percentage
 - Visual progress indicator
 
-### 📊 Dashboard
+📊 Dashboard
 - Total balance
 - Total income
 - Total expenses
@@ -47,41 +45,37 @@ Expense Tracker allows users to securely manage their income and expenses, set m
 - Monthly spending trends
 - Income vs expenses visualization
 
-### 🔔 User Feedback
+🔔 User Feedback
 - Success notifications
 - Error notifications
 - Budget update notifications
 - Expense operation notifications
 - Income operation notifications
 
----
+🛠️ Tech Stack
 
-## 🛠️ Tech Stack
-
-### Backend
+Backend
 - Python
 - Flask
 - Flask-SQLAlchemy
 - Flask-Login
 
-### Frontend
+Frontend
 - HTML5
 - CSS3
 - JavaScript
 - Chart.js
 
-### Database
+Database
 - SQLite
 - SQLAlchemy ORM
 
-### Development Tools
+Development Tools
 - Visual Studio Code
 - Git
 - GitHub
 
----
-
-## 🏗️ Project Architecture
+🏗️ Project Architecture
 
 ```text
 Expense-Tracker/

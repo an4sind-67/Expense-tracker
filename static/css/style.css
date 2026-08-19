@@ -76,6 +76,8 @@ body {
     opacity: 0.9;
 }
 
+/* Dashboard */
+
 .active {
     color: #2563eb !important;
     font-weight: bold;
@@ -213,6 +215,9 @@ body {
     font-weight: bold;
 }
 
+
+/* Responsive design */
+
 @media (max-width: 900px) {
 
     .summary-cards {
@@ -224,6 +229,7 @@ body {
     }
 
 }
+
 
 @media (max-width: 600px) {
 
@@ -254,6 +260,8 @@ body {
     }
 
 }
+
+/* Expense Form */
 
 .form-container {
     max-width: 600px;
@@ -314,6 +322,8 @@ body {
     color: #374151;
     background: #f3f4f6;
 }
+
+/* Expenses Page */
 
 .page-header {
     display: flex;
@@ -429,6 +439,8 @@ td {
 
 }
 
+/* Budget Page */
+
 .budget-container {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
@@ -484,6 +496,8 @@ td {
     overflow: hidden;
 }
 
+/* Chrome, Edge and Safari */
+
 .budget-progress-bar::-webkit-progress-bar {
     background: #e5e7eb;
     border-radius: 20px;
@@ -494,10 +508,14 @@ td {
     border-radius: 20px;
 }
 
+/* Firefox */
+
 .budget-progress-bar::-moz-progress-bar {
     background: #2563eb;
     border-radius: 20px;
 }
+
+/* Dashboard Chart */
 
 .chart-container {
     position: relative;
@@ -505,13 +523,21 @@ td {
     height: 280px;
 }
 
+/* Monthly Spending Chart */
+
 .monthly-chart {
     margin-top: 30px;
 }
 
+/* Income vs Expenses Chart */
+
 .comparison-chart {
     margin-top: 30px;
 }
+
+/* ============================================================
+   AUTHENTICATION
+   ============================================================ */
 
 .auth-container {
     min-height: 100vh;
@@ -524,6 +550,7 @@ td {
 
     padding: 20px;
 }
+
 
 .auth-card {
     width: 100%;
@@ -540,13 +567,16 @@ td {
         0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+
 .auth-card h1 {
     margin-bottom: 10px;
 }
 
+
 .auth-card h2 {
     margin-bottom: 8px;
 }
+
 
 .auth-card > p {
     color: #64748b;
@@ -554,11 +584,13 @@ td {
     margin-bottom: 25px;
 }
 
+
 .auth-button {
     width: 100%;
 
     margin-top: 10px;
 }
+
 
 .auth-error {
     background: #fee2e2;
@@ -572,6 +604,7 @@ td {
     margin-bottom: 20px;
 }
 
+
 .auth-footer {
     text-align: center;
 
@@ -580,6 +613,7 @@ td {
     margin-bottom: 0 !important;
 }
 
+
 .auth-footer a {
     color: #2563eb;
 
@@ -587,6 +621,10 @@ td {
 
     font-weight: 600;
 }
+
+/* ============================================================
+   USER NAVIGATION
+   ============================================================ */
 
 .nav-user {
     display: flex;
@@ -598,11 +636,13 @@ td {
     margin-left: auto;
 }
 
+
 .user-name {
     color: #334155;
 
     font-weight: 600;
 }
+
 
 .logout-link {
     color: #dc2626;
@@ -612,9 +652,14 @@ td {
     font-weight: 600;
 }
 
+
 .logout-link:hover {
     text-decoration: underline;
 }
+
+/* ============================================================
+   NAVBAR LAYOUT FIX
+   ============================================================ */
 
 .navbar {
     display: flex;
@@ -628,10 +673,12 @@ td {
     border-bottom: 1px solid #e5e7eb;
 }
 
+
 .navbar .logo {
     flex-shrink: 0;
     white-space: nowrap;
 }
+
 
 .nav-links {
     display: flex;
@@ -639,6 +686,7 @@ td {
     gap: 32px;
     flex-shrink: 0;
 }
+
 
 .nav-links a {
     display: inline-block;
@@ -648,9 +696,11 @@ td {
     font-size: 17px;
 }
 
+
 .nav-links a:hover {
     color: #2563eb;
 }
+
 
 .nav-user {
     display: flex;
@@ -661,10 +711,12 @@ td {
     white-space: nowrap;
 }
 
+
 .user-name {
     color: #334155;
     font-weight: 600;
 }
+
 
 .logout-link {
     color: #dc2626;
@@ -672,9 +724,15 @@ td {
     font-weight: 600;
 }
 
+
 .logout-link:hover {
     text-decoration: underline;
 }
+
+
+/* ============================================================
+   RESPONSIVE NAVBAR
+   ============================================================ */
 
 @media (max-width: 900px) {
 
@@ -694,6 +752,7 @@ td {
 
 }
 
+
 @media (max-width: 650px) {
 
     .navbar {
@@ -711,6 +770,10 @@ td {
 
 }
 
+/* ============================================================
+   FLASH MESSAGES
+   ============================================================ */
+
 .flash-container {
     position: fixed;
 
@@ -722,6 +785,7 @@ td {
 
     width: 350px;
 }
+
 
 .flash-message {
     padding: 14px 18px;
@@ -737,6 +801,7 @@ td {
     animation: slideIn 0.3s ease;
 }
 
+
 .flash-message.success {
     background: #dcfce7;
 
@@ -744,6 +809,7 @@ td {
 
     border: 1px solid #86efac;
 }
+
 
 .flash-message.error {
     background: #fee2e2;
@@ -753,6 +819,7 @@ td {
     border: 1px solid #fca5a5;
 }
 
+
 .flash-message.warning {
     background: #fef3c7;
 
@@ -761,6 +828,7 @@ td {
     border: 1px solid #fcd34d;
 }
 
+
 .flash-message.info {
     background: #dbeafe;
 
@@ -768,6 +836,7 @@ td {
 
     border: 1px solid #93c5fd;
 }
+
 
 @keyframes slideIn {
 
@@ -789,11 +858,20 @@ td {
 
 }
 
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
+
 .container {
     width: min(1200px, calc(100% - 40px));
     margin: 0 auto;
     padding: 45px 0;
 }
+
+
+/* ============================================================
+   DASHBOARD HEADER
+   ============================================================ */
 
 .dashboard-header {
     display: flex;
@@ -803,17 +881,24 @@ td {
     margin-bottom: 35px;
 }
 
+
 .dashboard-header h1 {
     margin: 0 0 8px;
     font-size: 42px;
     color: #172554;
 }
 
+
 .dashboard-header p {
     margin: 0;
     color: #64748b;
     font-size: 18px;
 }
+
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
 
 .summary-cards {
     display: grid;
@@ -822,6 +907,7 @@ td {
     margin-bottom: 35px;
 }
 
+
 .summary-card {
     background: #ffffff;
     border-radius: 16px;
@@ -829,11 +915,13 @@ td {
     box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
 }
 
+
 .summary-card h3 {
     margin: 0 0 18px;
     color: #64748b;
     font-size: 17px;
 }
+
 
 .summary-card p {
     margin: 10px 0 0;
@@ -841,19 +929,27 @@ td {
     font-size: 15px;
 }
 
+
 .summary-value {
     font-size: 32px;
     font-weight: 700;
     color: #172554;
 }
 
+
 .summary-value.positive {
     color: #16a34a;
 }
 
+
 .summary-value.negative {
     color: #dc2626;
 }
+
+
+/* ============================================================
+   DASHBOARD GRID
+   ============================================================ */
 
 .dashboard-grid {
     display: grid;
@@ -862,12 +958,18 @@ td {
     align-items: start;
 }
 
+
 .dashboard-section {
     background: #ffffff;
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
 }
+
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
 
 .section-header {
     display: flex;
@@ -877,11 +979,13 @@ td {
     margin-bottom: 25px;
 }
 
+
 .section-header h2 {
     margin: 0;
     color: #172554;
     font-size: 25px;
 }
+
 
 .section-header a {
     color: #2563eb;
@@ -889,9 +993,15 @@ td {
     font-weight: 600;
 }
 
+
 .section-header a:hover {
     text-decoration: underline;
 }
+
+
+/* ============================================================
+   SPENDING PERIOD SELECTOR
+   ============================================================ */
 
 #spendingPeriod {
     padding: 10px 14px;
@@ -902,6 +1012,11 @@ td {
     cursor: pointer;
 }
 
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+
 .chart-container {
     position: relative;
     width: 100%;
@@ -909,22 +1024,31 @@ td {
     margin-bottom: 35px;
 }
 
+
 .monthly-chart {
     margin-top: 20px;
 }
+
 
 .comparison-chart {
     margin-top: 20px;
 }
 
+
+/* ============================================================
+   RECENT TRANSACTIONS
+   ============================================================ */
+
 .transactions-section {
     min-height: 400px;
 }
+
 
 .transactions-list {
     display: flex;
     flex-direction: column;
 }
+
 
 .transaction-item {
     display: flex;
@@ -935,9 +1059,11 @@ td {
     border-bottom: 1px solid #e5e7eb;
 }
 
+
 .transaction-item:last-child {
     border-bottom: none;
 }
+
 
 .transaction-info h3 {
     margin: 0 0 6px;
@@ -945,11 +1071,13 @@ td {
     font-size: 17px;
 }
 
+
 .transaction-info p {
     margin: 0;
     color: #94a3b8;
     font-size: 14px;
 }
+
 
 .transaction-amount {
     font-weight: 700;
@@ -957,13 +1085,20 @@ td {
     font-size: 16px;
 }
 
+
 .transaction-amount.income {
     color: #16a34a;
 }
 
+
 .transaction-amount.expense {
     color: #dc2626;
 }
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
 
 .empty-state {
     text-align: center;
@@ -971,13 +1106,20 @@ td {
     color: #64748b;
 }
 
+
 .empty-state p {
     margin-bottom: 20px;
 }
 
+
+/* ============================================================
+   BUDGET SUMMARY
+   ============================================================ */
+
 .budget-summary {
     margin-top: 24px;
 }
+
 
 .budget-info {
     display: flex;
@@ -986,21 +1128,25 @@ td {
     margin-bottom: 18px;
 }
 
+
 .budget-info div {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
+
 .budget-info strong {
     font-size: 24px;
     color: #172554;
 }
 
+
 .budget-info span {
     color: #94a3b8;
     font-size: 14px;
 }
+
 
 .budget-progress {
     width: 100%;
@@ -1010,6 +1156,7 @@ td {
     overflow: hidden;
 }
 
+
 .budget-progress-bar {
     height: 100%;
     background: #2563eb;
@@ -1017,11 +1164,17 @@ td {
     transition: width 0.4s ease;
 }
 
+
 .budget-percentage {
     margin: 10px 0 0;
     color: #64748b;
     font-size: 14px;
 }
+
+
+/* ============================================================
+   RESPONSIVE DASHBOARD
+   ============================================================ */
 
 @media (max-width: 1000px) {
 
@@ -1034,6 +1187,7 @@ td {
     }
 
 }
+
 
 @media (max-width: 650px) {
 
@@ -1068,86 +1222,4 @@ td {
         height: 280px;
     }
 
-}
-
-.expense-filter-form {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.expense-filter-form input,
-.expense-filter-form select {
-    height: 44px;
-    padding: 0 14px;
-    border: 1px solid #d9dee7;
-    border-radius: 8px;
-    background: #ffffff;
-    font-size: 14px;
-    color: #1f2937;
-    box-sizing: border-box;
-}
-
-.expense-filter-form input[type="text"] {
-    min-width: 220px;
-}
-
-.expense-filter-form input[type="date"] {
-    min-width: 150px;
-}
-
-.expense-filter-form select {
-    min-width: 160px;
-}
-
-.expense-filter-form input:focus,
-.expense-filter-form select:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.expense-filter-form .btn {
-    height: 44px;
-    border: none;
-    cursor: pointer;
-}
-
-.clear-filter {
-    height: 44px;
-    padding: 0 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #374151;
-    background: #f3f4f6;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.clear-filter:hover {
-    background: #e5e7eb;
-}
-
-@media (max-width: 900px) {
-    .expense-filter-form {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .expense-filter-form input,
-    .expense-filter-form select,
-    .expense-filter-form .btn,
-    .clear-filter {
-        width: 100%;
-    }
-
-    .expense-filter-form input[type="text"],
-    .expense-filter-form input[type="date"],
-    .expense-filter-form select {
-        min-width: 0;
-    }
 }
