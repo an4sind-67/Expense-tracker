@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, Response
 from flask_login import (
     LoginManager,
     login_user,
@@ -9,6 +9,8 @@ from flask_login import (
 from models import db, User, Expense, Income, Budget
 from datetime import datetime, date
 from sqlalchemy import inspect, text
+import csv
+import io
 
 
 app = Flask(__name__)
@@ -768,24 +770,150 @@ def add_expense():
 @login_required
 def expenses():
 
-    expenses = Expense.query.filter_by(
+    search = request.args.get("search", "").strip()
+    category = request.args.get("category", "").strip()
+    from_date = request.args.get("from_date", "").strip()
+    to_date = request.args.get("to_date", "").strip()
 
+    query = Expense.query.filter_by(
         user_id=current_user.id
+    )
 
-    ).order_by(
+    if search:
+        query = query.filter(
+            Expense.title.ilike(f"%{search}%")
+        )
 
+    if category:
+        query = query.filter(
+            Expense.category == category
+        )
+
+    if from_date:
+        try:
+            start_date = datetime.strptime(
+                from_date,
+                "%Y-%m-%d"
+            ).date()
+
+            query = query.filter(
+                Expense.date >= start_date
+            )
+
+        except ValueError:
+            from_date = ""
+
+    if to_date:
+        try:
+            end_date = datetime.strptime(
+                to_date,
+                "%Y-%m-%d"
+            ).date()
+
+            query = query.filter(
+                Expense.date <= end_date
+            )
+
+        except ValueError:
+            to_date = ""
+
+    expenses = query.order_by(
         Expense.date.desc()
-
     ).all()
 
-
     return render_template(
-
         "expenses.html",
-
-        expenses=expenses
-
+        expenses=expenses,
+        search=search,
+        category=category,
+        from_date=from_date,
+        to_date=to_date
     )
+
+@app.route("/expenses/export")
+@login_required
+def export_expenses():
+
+    search = request.args.get("search", "").strip()
+    category = request.args.get("category", "").strip()
+    from_date = request.args.get("from_date", "").strip()
+    to_date = request.args.get("to_date", "").strip()
+
+    query = Expense.query.filter_by(
+        user_id=current_user.id
+    )
+
+    if search:
+        query = query.filter(
+            Expense.title.ilike(f"%{search}%")
+        )
+
+    if category:
+        query = query.filter(
+            Expense.category == category
+        )
+
+    if from_date:
+        try:
+            start_date = datetime.strptime(
+                from_date,
+                "%Y-%m-%d"
+            ).date()
+
+            query = query.filter(
+                Expense.date >= start_date
+            )
+
+        except ValueError:
+            pass
+
+    if to_date:
+        try:
+            end_date = datetime.strptime(
+                to_date,
+                "%Y-%m-%d"
+            ).date()
+
+            query = query.filter(
+                Expense.date <= end_date
+            )
+
+        except ValueError:
+            pass
+
+    expenses = query.order_by(
+        Expense.date.desc()
+    ).all()
+
+    output = io.StringIO()
+
+    writer = csv.writer(output)
+
+    writer.writerow([
+        "Expense",
+        "Category",
+        "Date",
+        "Amount"
+    ])
+
+    for expense in expenses:
+        writer.writerow([
+            expense.title,
+            expense.category,
+            expense.date,
+            expense.amount
+        ])
+
+    response = Response(
+        output.getvalue(),
+        mimetype="text/csv"
+    )
+
+    response.headers["Content-Disposition"] = (
+        "attachment; filename=expenses.csv"
+    )
+
+    return response
 
 
 # ============================================================
@@ -991,6 +1119,115 @@ def budget():
     current_year = date.today().year
 
 
+@app.route("/reports")
+@login_required
+def reports():
+
+    expenses = Expense.query.filter_by(
+        user_id=current_user.id
+    ).all()
+
+    incomes = Income.query.filter_by(
+        user_id=current_user.id
+    ).all()
+
+    total_income = sum(
+        income.amount
+        for income in incomes
+    )
+
+    total_expenses = sum(
+        expense.amount
+        for expense in expenses
+    )
+
+    balance = total_income - total_expenses
+
+    transaction_count = (
+        len(expenses) + len(incomes)
+    )
+
+    category_totals = {}
+
+    for expense in expenses:
+
+        if expense.category in category_totals:
+
+            category_totals[expense.category] += expense.amount
+
+        else:
+
+            category_totals[expense.category] = expense.amount
+
+    category_labels = list(
+        category_totals.keys()
+    )
+
+    category_values = list(
+        category_totals.values()
+    )
+
+    monthly_income = {}
+
+    for income in incomes:
+
+        month_key = income.date.strftime(
+            "%Y-%m"
+        )
+
+        if month_key in monthly_income:
+
+            monthly_income[month_key] += income.amount
+
+        else:
+
+            monthly_income[month_key] = income.amount
+
+    monthly_expenses = {}
+
+    for expense in expenses:
+
+        month_key = expense.date.strftime(
+            "%Y-%m"
+        )
+
+        if month_key in monthly_expenses:
+
+            monthly_expenses[month_key] += expense.amount
+
+        else:
+
+            monthly_expenses[month_key] = expense.amount
+
+    all_months = sorted(
+        set(monthly_income.keys())
+        | set(monthly_expenses.keys())
+    )
+
+    monthly_income_labels = all_months
+
+    monthly_income_values = [
+        monthly_income.get(month, 0)
+        for month in all_months
+    ]
+
+    monthly_expense_values = [
+        monthly_expenses.get(month, 0)
+        for month in all_months
+    ]
+
+    return render_template(
+        "reports.html",
+        total_income=total_income,
+        total_expenses=total_expenses,
+        balance=balance,
+        transaction_count=transaction_count,
+        category_labels=category_labels,
+        category_values=category_values,
+        monthly_income_labels=monthly_income_labels,
+        monthly_income_values=monthly_income_values,
+        monthly_expense_values=monthly_expense_values
+    )
     # --------------------------------------------------------
     # Current user's budget
     # --------------------------------------------------------

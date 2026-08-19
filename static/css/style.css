@@ -1223,3 +1223,85 @@ td {
     }
 
 }
+
+.expense-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.expense-filter-form input,
+.expense-filter-form select {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid #d9dee7;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 14px;
+    color: #1f2937;
+    box-sizing: border-box;
+}
+
+.expense-filter-form input[type="text"] {
+    min-width: 220px;
+}
+
+.expense-filter-form input[type="date"] {
+    min-width: 150px;
+}
+
+.expense-filter-form select {
+    min-width: 160px;
+}
+
+.expense-filter-form input:focus,
+.expense-filter-form select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.expense-filter-form .btn {
+    height: 44px;
+    border: none;
+    cursor: pointer;
+}
+
+.clear-filter {
+    height: 44px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #374151;
+    background: #f3f4f6;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.clear-filter:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 900px) {
+    .expense-filter-form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .expense-filter-form input,
+    .expense-filter-form select,
+    .expense-filter-form .btn,
+    .clear-filter {
+        width: 100%;
+    }
+
+    .expense-filter-form input[type="text"],
+    .expense-filter-form input[type="date"],
+    .expense-filter-form select {
+        min-width: 0;
+    }
+}

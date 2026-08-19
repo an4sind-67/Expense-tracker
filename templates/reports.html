@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reports | Expense Tracker
+{% endblock %}
+
+{% block content %}
+
+<main class="container">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h1>Financial Reports</h1>
+
+            <p>
+                Analyze your income, expenses and financial activity.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="summary-cards">
+
+        <div class="summary-card">
+
+            <h3>Total Income</h3>
+
+            <div class="summary-value positive">
+                ₹{{ "%.2f"|format(total_income) }}
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Total Expenses</h3>
+
+            <div class="summary-value negative">
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Current Balance</h3>
+
+            <div class="summary-value">
+                ₹{{ "%.2f"|format(balance) }}
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Transactions</h3>
+
+            <div class="summary-value">
+                {{ transaction_count }}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <h2>
+                    Income vs Expenses
+                </h2>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="reportIncomeExpenseChart"
+                    data-income='{{ monthly_income_labels | tojson }}'
+                    data-income-values='{{ monthly_income_values | tojson }}'
+                    data-expense-values='{{ monthly_expense_values | tojson }}'>
+                </canvas>
+
+            </div>
+
+        </section>
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <h2>
+                    Expenses by Category
+                </h2>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="reportCategoryChart"
+                    data-labels='{{ category_labels | tojson }}'
+                    data-values='{{ category_values | tojson }}'>
+                </canvas>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+
+{% endblock %}

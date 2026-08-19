@@ -24,12 +24,7 @@
 
 </head>
 
-
 <body>
-
-    <!-- =====================================================
-         NAVIGATION
-         ===================================================== -->
 
     {% if current_user.is_authenticated %}
 
@@ -38,7 +33,6 @@
         <div class="logo">
             Expense Tracker
         </div>
-
 
         <div class="nav-links">
 
@@ -54,12 +48,15 @@
                 Income
             </a>
 
+            <a href="{{ url_for('reports') }}">
+                Reports
+            </a>
+
             <a href="{{ url_for('budget') }}">
                 Budget
             </a>
 
         </div>
-
 
         <div class="nav-user">
 
@@ -80,11 +77,6 @@
     </nav>
 
     {% endif %}
-
-
-    <!-- =====================================================
-         FLASH MESSAGES
-         ===================================================== -->
 
     {% with messages = get_flashed_messages(with_categories=true) %}
 
@@ -108,18 +100,8 @@
 
     {% endwith %}
 
-
-    <!-- =====================================================
-         MAIN CONTENT
-         ===================================================== -->
-
     {% block content %}
     {% endblock %}
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
 
     {% block scripts %}
     {% endblock %}
