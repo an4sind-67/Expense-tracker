@@ -1,3 +1,6 @@
+import os
+import webbrowser
+import threading
 from flask import Flask, render_template, request, redirect, url_for, flash, Response
 from flask_login import (
     LoginManager,
@@ -1194,4 +1197,17 @@ with app.app_context():
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    def open_browser():
+        webbrowser.open("http://localhost:5000/login")
+
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        threading.Timer(
+            1.5,
+            open_browser
+        ).start()
+
+    app.run(
+        host="127.0.0.1",
+        port=5000,
+        debug=True
+    )
